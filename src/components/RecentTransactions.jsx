@@ -1,34 +1,69 @@
-import React from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { formatDate } from "./FormatDate";
 
 export default function RecentTransactions() {
-    const transactions = [
-        { id: 1, title: "Salary", amount: "+50000", date: "2025-08-01" },
-        { id: 2, title: "Groceries", amount: "-2500", date: "2025-08-03" },
-        { id: 3, title: "Electricity Bill", amount: "-1500", date: "2025-08-05" },
-      ];
+  const [transactions, setTransactions] = useState([]);
+  const token = localStorage.getItem("token");
+  const isoDate = "2025-08-19T09:53:47.045Z";
+
+  // Convert to Date object
+
+  const fetchTransaction = () => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3000/transaction/get-transactions",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        // console.log(JSON.stringify(response.data));
+        setTransactions(response.data.transactions);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+  }, []);
   return (
     <div className="rounded-2xl bg-neutral-900 p-6 shadow-lg">
-          <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
-          <ul className="space-y-3">
-            {transactions.map((t) => (
-              <li
-                key={t.id}
-                className="flex justify-between border-b border-gray-800 pb-2"
-              >
-                <div>
-                  <p className="font-medium">{t.title}</p>
-                  <p className="text-sm text-gray-400">{t.date}</p>
-                </div>
-                <p
-                  className={`font-semibold ${
-                    t.amount.startsWith("+") ? "text-green-400" : "text-red-400"
-                  }`}
-                >
-                  {t.amount}
+      <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
+      <ul className="space-y-3">
+        {transactions.length > 0 ? (
+          transactions.slice(0, 5).map((t) => (
+            <li
+              key={t._id}
+              className="flex justify-between border-b border-gray-800 pb-2"
+            >
+              <div>
+                <p className="font-medium">{t.category}</p>
+                <p className="text-sm text-gray-400">
+                  {formatDate(t.createdAt)}
                 </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-  )
+              </div>
+              {t.type == "income" ? (
+                <p className={`font-semibold ${"text-green-400"}`}>
+                  + ₹{t.amount}
+                </p>
+              ) : (
+                <p className={`font-semibold ${"text-red-400"}`}>
+                  - ₹{t.amount}
+                </p>
+              )}
+            </li>
+          ))
+        ) : (
+          <p className="text-gray-400">No transactions yet.</p>
+        )}
+      </ul>
+    </div>
+  );
 }
