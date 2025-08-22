@@ -1,5 +1,7 @@
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
+import { LogOut } from "lucide-react";
 import RecentTransactions from "../components/RecentTransactions";
 import BudgetsSection from "../components/BudgetsSection";
 import GoalsSection from "../components/GoalsSection";
@@ -8,12 +10,17 @@ import CreateBudget from "../components/CreateBudget";
 import CreateGoal from "../components/CreateGoal";
 import axios from "axios";
 import FriendsList from "../components/FriendsList";
+import { socket } from "../socket";
 
 const Home = () => {
-  const { user } = useContext(UserContext);
-  const token = localStorage.getItem("token")
-  const [userData , setUserData] = useState([])
+  const { user, setUser } = useContext(UserContext);
+  const token = localStorage.getItem("token");
+  const [userData, setUserData] = useState([]);
+  const navigate = useNavigate();
   const balance = user?.balance || 0;
+  socket.on("budgetNotification", (data) => {
+    alert(data.message); // show toast/notification
+  });
 
   const fetchUserdata = () => {
     let config = {
@@ -21,8 +28,7 @@ const Home = () => {
       maxBodyLength: Infinity,
       url: "http://localhost:3000/user/",
       headers: {
-        Authorization:
-          `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
 
@@ -30,16 +36,16 @@ const Home = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data.message));
-        setUserData(response.data.user)
+        setUserData(response.data.user);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  useEffect(()=>{
-    fetchUserdata()
-  },[])
+  useEffect(() => {
+    fetchUserdata();
+  }, []);
 
   // State for modal
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
@@ -60,6 +66,13 @@ const Home = () => {
     setIsBudgetModalOpen(false);
   };
 
+  const handleLogOut = () => {
+   
+    localStorage.clear();
+    setUser(null);
+    navigate("/signin");
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navbar */}
@@ -72,7 +85,9 @@ const Home = () => {
               3
             </span>
           </div>
-          <div className="font-semibold">₹ {userData?.balance}</div>
+          <div onClick={()=>handleLogOut()}>
+            <LogOut className="h-6 w-6 text-white-500 hover:text-red-400 transition" />
+          </div>
         </div>
       </nav>
 
@@ -83,7 +98,7 @@ const Home = () => {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-lg font-semibold mb-2">Current Balance</h2>
-              <p className="text-3xl font-bold">₹ {userData?.balance}</p>
+              <p className="text-3xl font-bold">₹ {userData?.balance || 0}</p>
             </div>
             <div className="flex gap-3">
               <button
@@ -106,7 +121,7 @@ const Home = () => {
         <RecentTransactions />
 
         {/* Friends List */}
-        <FriendsList token={token}/>
+        <FriendsList token={token} />
 
         {/* Budgets */}
         <BudgetsSection />

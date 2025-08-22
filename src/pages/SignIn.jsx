@@ -3,6 +3,7 @@ import AuthLayout from "../components/AuthLayout";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
+import { socket } from "../socket";
 
 
 const SignIn = () => {
@@ -30,14 +31,14 @@ const SignIn = () => {
       axios
         .request(config)
         .then((response) => {
-          console.log("User Details ===>", response.data);
+          console.log("User Details ===>", response.data.user._id);
         console.log("Login response ===>", response.data.message);
         console.log("Your token ===>", response.data.token);
 
         // Save to localStorage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-
+        socket.emit("registerUser", response.data?.user?._id);
         // Update Context
         setUser(response.data.user);
 

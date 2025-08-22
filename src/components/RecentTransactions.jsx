@@ -34,17 +34,17 @@ export default function RecentTransactions() {
     fetchTransaction();
   }, []);
   return (
-    <div className="rounded-2xl bg-neutral-900 p-6 shadow-lg">
+    <div className="rounded-2xl h-100  overflow-y-scroll bg-neutral-900 p-6 shadow-lg">
       <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
       <ul className="space-y-3">
         {transactions.length > 0 ? (
-          transactions.slice(0, 5).map((t) => (
+          transactions.slice(0,8).map((t) => (
             <li
               key={t._id}
               className="flex justify-between border-b border-gray-800 pb-2"
             >
               <div>
-                <p className="font-medium">{t.category}</p>
+                <p className="font-medium">{t.category?t.category : t.description}</p>
                 <p className="text-sm text-gray-400">
                   {formatDate(t.createdAt)}
                 </p>
