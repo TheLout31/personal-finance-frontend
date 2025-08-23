@@ -46,7 +46,7 @@ export default function BudgetsSection() {
           budgets.map((b) => {
             const percentage = (b.spent / b.amount) * 100;
             return (
-              <li key={b.id}>
+              <li key={b._id}>
                 <div className="flex justify-between mb-1">
                   <span>{b.category}</span>
                   <span className="text-sm text-gray-400">

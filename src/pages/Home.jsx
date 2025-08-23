@@ -11,13 +11,14 @@ import CreateGoal from "../components/CreateGoal";
 import axios from "axios";
 import FriendsList from "../components/FriendsList";
 import { socket } from "../socket";
+import { jwtDecode } from "jwt-decode";
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
   const token = localStorage.getItem("token");
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
-  const balance = user?.balance || 0;
+
   socket.on("budgetNotification", (data) => {
     alert(data.message); // show toast/notification
   });
@@ -67,11 +68,27 @@ const Home = () => {
   };
 
   const handleLogOut = () => {
-   
     localStorage.clear();
     setUser(null);
     navigate("/signin");
   };
+
+  useEffect(() => {
+    const checkTokenExpiry = () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/signin");
+        return;
+      }
+
+      const decoded = jwtDecode(token);
+      if (decoded.exp * 1000 < Date.now()) {
+        localStorage.removeItem("token");
+        navigate("/signin");
+      }
+    };
+    checkTokenExpiry();
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -85,7 +102,7 @@ const Home = () => {
               3
             </span>
           </div>
-          <div onClick={()=>handleLogOut()}>
+          <div onClick={() => handleLogOut()}>
             <LogOut className="h-6 w-6 text-white-500 hover:text-red-400 transition" />
           </div>
         </div>

@@ -53,6 +53,23 @@ const SignIn = () => {
     }
   };
 
+  // useEffect(() => {
+  //     const checkTokenExpiry = () => {
+  //       const token = localStorage.getItem("token");
+  //       if (!token) {
+  //         navigate("/");
+  //         return;
+  //       }
+  
+  //       const decoded = jwtDecode(token);
+  //       if (decoded.exp * 1000 < Date.now()) {
+  //         localStorage.removeItem("token");
+  //         navigate("/");
+  //       }
+  //     };
+  //     checkTokenExpiry();
+  //   }, []);
+
   return (
     <AuthLayout title="Sign In">
       <form onSubmit={handleSubmit} className="space-y-4">
