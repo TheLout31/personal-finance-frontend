@@ -4,12 +4,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 import { socket } from "../socket";
+import { jwtDecode } from "jwt-decode";
 
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const {setUser} = useContext(UserContext)
+  const { setUser } = useContext(UserContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,18 +33,18 @@ const SignIn = () => {
         .request(config)
         .then((response) => {
           console.log("User Details ===>", response.data.user._id);
-        console.log("Login response ===>", response.data.message);
-        console.log("Your token ===>", response.data.token);
+          console.log("Login response ===>", response.data.message);
+          console.log("Your token ===>", response.data.token);
 
-        // Save to localStorage
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        socket.emit("registerUser", response.data?.user?._id);
-        // Update Context
-        setUser(response.data.user);
+          // Save to localStorage
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          socket.emit("registerUser", response.data?.user?._id);
+          // Update Context
+          setUser(response.data.user);
 
-        // Navigate to Home
-        navigate("/");
+          // Navigate to Home
+          navigate("/");
         })
         .catch((error) => {
           console.log(error);
@@ -53,22 +54,7 @@ const SignIn = () => {
     }
   };
 
-  // useEffect(() => {
-  //     const checkTokenExpiry = () => {
-  //       const token = localStorage.getItem("token");
-  //       if (!token) {
-  //         navigate("/");
-  //         return;
-  //       }
   
-  //       const decoded = jwtDecode(token);
-  //       if (decoded.exp * 1000 < Date.now()) {
-  //         localStorage.removeItem("token");
-  //         navigate("/");
-  //       }
-  //     };
-  //     checkTokenExpiry();
-  //   }, []);
 
   return (
     <AuthLayout title="Sign In">
