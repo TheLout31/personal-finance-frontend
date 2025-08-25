@@ -32,9 +32,9 @@ const SignIn = () => {
       axios
         .request(config)
         .then((response) => {
-          console.log("User Details ===>", response.data.user._id);
-          console.log("Login response ===>", response.data.message);
-          console.log("Your token ===>", response.data.token);
+          // console.log("User Details ===>", response.data.user._id);
+          // console.log("Login response ===>", response.data.message);
+          // console.log("Your token ===>", response.data.token);
 
           // Save to localStorage
           localStorage.setItem("token", response.data.token);

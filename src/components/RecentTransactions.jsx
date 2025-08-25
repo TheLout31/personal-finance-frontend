@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { formatDate } from "./FormatDate";
 
-export default function RecentTransactions() {
+export default function RecentTransactions(refresh) {
   const [transactions, setTransactions] = useState([]);
   const token = localStorage.getItem("token");
   const isoDate = "2025-08-19T09:53:47.045Z";
@@ -24,6 +24,7 @@ export default function RecentTransactions() {
       .then((response) => {
         // console.log(JSON.stringify(response.data));
         setTransactions(response.data.transactions);
+        refresh
       })
       .catch((error) => {
         console.log(error);

@@ -1,12 +1,84 @@
-# React + Vite
+💰 Finance Manager (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern finance management web application frontend built with React, Context API, TailwindCSS, and Axios.
+This app helps users track budgets, transactions, goals, and notifications with a clean UI and seamless user experience.
 
-Currently, two official plugins are available:
+🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔐 Authentication with JWT (Sign In / Sign Up / Logout)
 
-## Expanding the ESLint configuration
+📊 Dashboard with recent transactions, budgets, and financial goals
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+💵 Budgets Section – Create, update, delete budgets with progress bars
+
+🎯 Goals Section – Track financial goals and progress
+
+🧾 Transactions – Add & view recent transactions
+
+🛎️ Notifications – Stay updated with reminders
+
+👥 Friends List – View and connect with friends
+
+🌙 Dark mode friendly UI (TailwindCSS + custom styling)
+
+🛠️ Tech Stack
+
+React 18 – UI library
+
+React Router – Navigation
+
+Axios – API requests
+
+Context API – State management
+
+TailwindCSS – Styling
+
+Framer Motion (optional) – Animations
+
+📦 Installation
+
+Clone the repository:
+```bash
+git clone https://github.com/your-username/finance-manager-frontend.git
+cd finance-manager-frontend
+```
+
+Install dependencies:
+```bash
+npm install
+```
+
+Run the development server:
+```bash
+npm run dev
+```
+
+🔗 API Integration
+
+This frontend connects to the Finance Manager Backend.
+Make sure you have the backend running locally on http://localhost:3000
+.
+
+
+📸 Screenshots
+Dashboard
+
+Budgets Section
+
+👨‍💻 Contributing
+
+Contributions are welcome!
+
+Fork the repo
+```bash
+Create a new branch (feature/my-feature)
+
+Commit your changes (git commit -m 'Add feature')
+
+Push to your branch (git push origin feature/my-feature)
+
+Open a Pull Request
+```
+📜 License
+
+This project is licensed under the MIT License.

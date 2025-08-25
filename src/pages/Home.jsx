@@ -15,6 +15,8 @@ import { jwtDecode } from "jwt-decode";
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const token = localStorage.getItem("token");
   const [userData, setUserData] = useState([]);
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ const Home = () => {
   useEffect(() => {
     fetchUserdata();
     fetchNotifications();
-  }, []);
+  }, [refreshKey]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -216,16 +218,19 @@ const Home = () => {
         </div>
 
         {/* Recent Transactions */}
-        <RecentTransactions />
+        <RecentTransactions refresh={() => setRefreshKey((prev) => prev + 1)} />
 
         {/* Friends List */}
-        <FriendsList token={token} />
+        <FriendsList
+          token={token}
+          refresh={() => setRefreshKey((prev) => prev + 1)}
+        />
 
         {/* Budgets */}
-        <BudgetsSection />
+        <BudgetsSection refresh={() => setRefreshKey((prev) => prev + 1)} />
 
         {/* Goals */}
-        <GoalsSection />
+        <GoalsSection refresh={() => setRefreshKey((prev) => prev + 1)} />
       </div>
 
       {/* Modal */}

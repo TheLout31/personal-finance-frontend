@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
 
-export default function BudgetsSection() {
+export default function BudgetsSection(refresh) {
   const [budgets, setBudgets] = useState([]);
   const [selectedBudget, setSelectedBudget] = useState(null);
   const [amountToAdd, setAmountToAdd] = useState("");
@@ -59,9 +59,36 @@ export default function BudgetsSection() {
       );
       await getBudgets(); // refresh budgets after update
       closeModal();
+      refresh
     } catch (error) {
       console.error(error);
     }
+  };
+
+  // ✅ Delete Budget API
+  const handleDeleteBudget = async (budgetId) => {
+    try {
+      await axios.delete(`http://localhost:3000/budget/delete/${budgetId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      await getBudgets(); // refresh list
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // ✅ Long press handler
+  let pressTimer;
+  const startPress = (budgetId) => {
+    pressTimer = setTimeout(() => {
+      if (window.confirm("Are you sure you want to delete this budget?")) {
+        handleDeleteBudget(budgetId);
+      }
+    }, 800); 
+  };
+
+  const cancelPress = () => {
+    clearTimeout(pressTimer);
   };
 
   return (
@@ -76,6 +103,11 @@ export default function BudgetsSection() {
                 key={b._id}
                 className="cursor-pointer p-2 rounded hover:bg-neutral-800 transition"
                 onClick={() => openModal(b)}
+                onMouseDown={() => startPress(b._id)}
+                onMouseUp={cancelPress}
+                onMouseLeave={cancelPress}
+                onTouchStart={() => startPress(b._id)}
+                onTouchEnd={cancelPress}
               >
                 <div className="flex justify-between mb-1 items-center">
                   <span>{b.category}</span>

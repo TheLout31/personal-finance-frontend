@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export default function GoalsSection() {
+export default function GoalsSection(refresh) {
   const [goals, setGoals] = useState([]);
   const token = localStorage.getItem("token");
 
@@ -21,6 +21,7 @@ export default function GoalsSection() {
         .then((response) => {
           // console.log(JSON.stringify(response.data));
           setGoals(response.data);
+          refresh()
         })
         .catch((error) => {
           console.log(error);
