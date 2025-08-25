@@ -6,6 +6,7 @@ import { UserContext } from "../context/userContext";
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
   const apiKey = import.meta.env.VITE_API_URL;
@@ -17,6 +18,7 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       let config = {
         method: "post",
         maxBodyLength: Infinity,
@@ -35,14 +37,16 @@ const SignIn = () => {
           localStorage.setItem("user", JSON.stringify(response.data.user));
           // Update Context
           setUser(response.data.user);
-
+          setLoading(false);
           // Navigate to Home
           navigate("/");
         })
         .catch((error) => {
+          setLoading(false);
           console.log(error);
         });
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -70,7 +74,7 @@ const SignIn = () => {
           type="submit"
           className="w-full rounded-lg bg-white p-3 font-semibold text-black hover:bg-gray-300 transition"
         >
-          Sign In
+          {loading ? "Loading..." : "Sign In"}
         </button>
         <p className="text-center text-sm text-gray-400">
           Don’t have an account?{" "}
