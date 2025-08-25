@@ -10,8 +10,8 @@ import CreateBudget from "../components/CreateBudget";
 import CreateGoal from "../components/CreateGoal";
 import axios from "axios";
 import FriendsList from "../components/FriendsList";
-import { socket } from "../socket";
 import { jwtDecode } from "jwt-decode";
+import config from "../config";
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
@@ -24,15 +24,13 @@ const Home = () => {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const notifRef = useRef(null);
 
-  socket.on("budgetNotification", (data) => {
-    alert(data.message); // show toast/notification
-  });
+  
 
   const fetchUserdata = () => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:3000/user/",
+      url: `http://localhost:3000/user/`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
