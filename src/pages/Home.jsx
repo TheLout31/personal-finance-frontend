@@ -99,6 +99,9 @@ const Home = () => {
   useEffect(() => {
     const checkTokenExpiry = () => {
       const token = localStorage.getItem("token");
+      if(!token){
+        navigate("/signin");
+      }
       if (token) {
         const decoded = jwtDecode(token);
         if (decoded.exp * 1000 < Date.now()) {

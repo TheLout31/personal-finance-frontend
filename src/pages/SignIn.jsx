@@ -37,7 +37,7 @@ const SignIn = () => {
           setUser(response.data.user);
 
           // Navigate to Home
-          navigate("/home");
+          navigate("/");
         })
         .catch((error) => {
           console.log(error);
