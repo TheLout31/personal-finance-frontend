@@ -6,14 +6,14 @@ export default function RecentTransactions(refresh) {
   const [transactions, setTransactions] = useState([]);
   const token = localStorage.getItem("token");
   const isoDate = "2025-08-19T09:53:47.045Z";
-
+  const apiKey = import.meta.env.VITE_API_URL;
   // Convert to Date object
 
   const fetchTransaction = () => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:3000/transaction/get-transactions",
+      url: `${apiKey}/transaction/get-transactions`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -24,7 +24,7 @@ export default function RecentTransactions(refresh) {
       .then((response) => {
         // console.log(JSON.stringify(response.data));
         setTransactions(response.data.transactions);
-        refresh
+        refresh;
       })
       .catch((error) => {
         console.log(error);
@@ -39,13 +39,15 @@ export default function RecentTransactions(refresh) {
       <h2 className="text-lg font-semibold mb-4">Recent Transactions</h2>
       <ul className="space-y-3">
         {transactions.length > 0 ? (
-          transactions.slice(0,8).map((t) => (
+          transactions.slice(0, 8).map((t) => (
             <li
               key={t._id}
               className="flex justify-between border-b border-gray-800 pb-2"
             >
               <div>
-                <p className="font-medium">{t.category?t.category : t.description}</p>
+                <p className="font-medium">
+                  {t.category ? t.category : t.description}
+                </p>
                 <p className="text-sm text-gray-400">
                   {formatDate(t.createdAt)}
                 </p>

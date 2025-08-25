@@ -16,6 +16,7 @@ import config from "../config";
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
   const [refreshKey, setRefreshKey] = useState(0);
+  const apiKey = import.meta.env.VITE_API_URL;
 
   const token = localStorage.getItem("token");
   const [userData, setUserData] = useState([]);
@@ -30,7 +31,7 @@ const Home = () => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `http://localhost:3000/user/`,
+      url: `${apiKey}/user/`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -49,7 +50,7 @@ const Home = () => {
 
   const fetchNotifications = () => {
     axios
-      .get("http://localhost:3000/notification/", {
+      .get(`${apiKey}/notification/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setNotifications(res.data.notifications || []))

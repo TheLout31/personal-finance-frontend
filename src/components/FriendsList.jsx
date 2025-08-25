@@ -11,6 +11,7 @@ const FriendsList = ({ token }) => {
     description: "",
     toUser: "",
   });
+  const apiKey = import.meta.env.VITE_API_URL;
 
   const openTransferModal = (friend) => {
     setSelectedFriend(friend);
@@ -40,7 +41,7 @@ const FriendsList = ({ token }) => {
   const fetchFriends = () => {
     let config = {
       method: "get",
-      url: "http://localhost:3000/user/friends",
+      url: `${apiKey}/user/friends`,
       headers: { Authorization: `Bearer ${token}` },
     };
 
@@ -61,7 +62,7 @@ const FriendsList = ({ token }) => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://localhost:3000/transaction/add-transaction",
+      url: `${apiKey}/transaction/add-transaction`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

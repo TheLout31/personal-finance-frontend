@@ -7,6 +7,7 @@ export default function BudgetsSection(refresh) {
   const [selectedBudget, setSelectedBudget] = useState(null);
   const [amountToAdd, setAmountToAdd] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const apiKey = import.meta.env.VITE_API_URL;
 
   const { user } = useContext(UserContext);
   const token = localStorage.getItem("token");
@@ -15,7 +16,7 @@ export default function BudgetsSection(refresh) {
     try {
       let config = {
         method: "get",
-        url: "http://localhost:3000/budget/",
+        url: `${apiKey}/budget/`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -47,7 +48,7 @@ export default function BudgetsSection(refresh) {
 
     try {
       await axios.post(
-        `http://localhost:3000/transaction/add-transaction`,
+        `${apiKey}/transaction/add-transaction`,
         {
           type: "expense",
           amount: Number(amountToAdd),
@@ -68,7 +69,7 @@ export default function BudgetsSection(refresh) {
   // ✅ Delete Budget API
   const handleDeleteBudget = async (budgetId) => {
     try {
-      await axios.delete(`http://localhost:3000/budget/delete/${budgetId}`, {
+      await axios.delete(`${apiKey}/budget/delete/${budgetId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       await getBudgets(); // refresh list

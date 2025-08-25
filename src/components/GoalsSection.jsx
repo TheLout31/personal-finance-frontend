@@ -4,13 +4,14 @@ import React, { useEffect, useState } from "react";
 export default function GoalsSection(refresh) {
   const [goals, setGoals] = useState([]);
   const token = localStorage.getItem("token");
+  const apiKey = import.meta.env.VITE_API_URL;
 
   const fetchGoals = async () => {
     try {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:3000/goal/",
+        url: `${apiKey}/goal/`,
         headers: {
           Authorization: `Bearer ${token}`,
         },

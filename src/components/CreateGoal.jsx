@@ -6,12 +6,12 @@ export default function CreateGoal({ closeModal }) {
   const [amount, setAmount] = useState("");
   const [targetDate, setTargetDate] = useState("");
   const token = localStorage.getItem("token");
-
+const apiKey = import.meta.env.VITE_API_URL;
   const addGoal = async (e) => {
     e.preventDefault(); // prevent page refresh
     try {
       const response = await axios.post(
-        "http://localhost:3000/goal/create",
+        `${apiKey}/goal/create`,
         {
           title,
           targetAmount: Number(amount),

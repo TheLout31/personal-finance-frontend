@@ -6,13 +6,14 @@ export default function CreateBudget({ closeModal }) {
   const [period, setPeriod] = useState("monthly");
   const [category, setCategory] = useState("Food");
   const token = localStorage.getItem("token");
+  const apiKey = import.meta.env.VITE_API_URL;
 
   const addBudget = async (e) => {
     e.preventDefault(); // prevent page refresh
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/budget/create",
+        `${apiKey}/budget/create`,
         {
           amount: Number(amount),
           period,
